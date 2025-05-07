@@ -1,8 +1,8 @@
 
 
-# 🛠️ Mini Compiler with Three-Address Code Generation
+# 🛠️ Mini C Compiler For Three-Address Code Generation
 
-A **mini-compiler project** written in **C using Flex and Bison (Lex & Yacc)**. It supports parsing and evaluating arithmetic expressions, assignments, `print` statements, conditional (`if-else`), and looping (`while`) constructs. The compiler generates **three-address code (TAC)** and evaluates expressions at runtime.
+A **mini C compiler project** written in **C using Flex and Bison (Lex & Yacc)**. It supports parsing and evaluating arithmetic expressions, assignments, `print` statements, conditional (`if-else`), and looping (`while`) constructs. The compiler generates **three-address code (TAC)** and evaluates expressions at runtime.
 
 ---
 
@@ -13,9 +13,7 @@ A **mini-compiler project** written in **C using Flex and Bison (Lex & Yacc)**. 
 - `print` statements  
 - Conditional logic (`if`, `if-else`)  
 - Looping constructs (`while`)  
-- Generation of Three-Address Code (TAC)  
-- Final evaluation and display of variable values  
-- Conflict-free grammar with proper precedence and associativity  
+- Generation of Three-Address Code (TAC)
 
 ---
 
@@ -44,19 +42,17 @@ A **mini-compiler project** written in **C using Flex and Bison (Lex & Yacc)**. 
 ## 🧪 Sample Input (`input.c`)
 
 ```c
-a = 5 + 3 * (2 - 1);
-b = a + 10;
-print b;
-
-if (b > 10) {
+a = 10;
+b = 20;
+if (a < b) {
     print a;
 } else {
     print b;
 }
-
-while (a < 20) {
-    a = a + 1;
+for (i = 0; i < 3; i = i + 1) {
+    print i;
 }
+
 ```
 
 ---
@@ -64,26 +60,21 @@ while (a < 20) {
 ## 📤 Expected Output
 
 ```plaintext
-b = 18
+Error: syntax error
 
---- Three Address Code (TAC) ---
-t0 = 2 - 1
-t1 = 3 * t0
-t2 = 5 + t1
-a = t2
-t3 = a + 10
-b = t3
-print b
-if (b > 10) {...} else {...}
+--- Three Address Code ---
+a = 10
+b = 20
+t0 = a < b
 print a
-while (a < 20) {...}
-t4 = a + 1
-a = t4
-...
-
---- Final Variable Values ---
-a = 20
-b = 18
+print b
+ifFalse t0 goto L0
+goto L1
+L0:
+L1:
+i = 0
+t1 = i < 3
+t2 = i + 1
 ```
 
 ---
@@ -103,7 +94,7 @@ gcc y.tab.c lex.yy.c -o compiler -ll
 ### ▶️ Run the Compiler
 
 ```bash
-./compiler
+./compiler < input.c
 ```
 
 ---
@@ -111,8 +102,7 @@ gcc y.tab.c lex.yy.c -o compiler -ll
 ## 📌 Notes
 
 - Input is read from the `input.c` file. Ensure it exists in the same directory.  
-- Handles integer arithmetic only.  
-- Final variable values are displayed after parsing.  
+- Handles integer arithmetic only.    
 - Control structures are converted to TAC and evaluated at a basic level.  
 
 ---
